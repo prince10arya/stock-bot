@@ -13,7 +13,7 @@
 
 <br>
 
-[Demo of StockBot](https://github.com/user-attachments/assets/a50fa266-5ae9-4869-a37f-599d7db790d9)
+[Demo of StockBot](https://github.com/prince10arya/project-demos/blob/main/Screen%20Recording%202026-04-27%20041205.mp4)
 > Demo of StockBot providing relevant, live, and interactive stock charts and interfaces
 
 
