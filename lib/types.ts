@@ -1,41 +1,71 @@
-import { CoreMessage } from 'ai'
+// ============================================================
+// StockBot Types — aligned with Python FastAPI backend schema
+// ============================================================
 
-export type Message = CoreMessage & {
-  id: string
+/** Tool result descriptor — maps to a TradingView widget */
+export interface ToolResult {
+  widget: string
+  props: Record<string, unknown>
+  tool_name: string
+  tool_args: Record<string, unknown>
 }
 
-export interface Chat extends Record<string, any> {
+/** A single message in a chat */
+export interface Message {
   id: string
-  title: string
-  createdAt: Date
-  userId: string
-  path: string
+  role: 'user' | 'assistant' | 'tool'
+  content: string
+  tool_name?: string | null
+  tool_args?: string | null
+  created_at: string
+}
+
+/** Full chat with messages */
+export interface Chat {
+  id: string
+  title?: string | null
+  created_at: string
+  updated_at: string
   messages: Message[]
-  sharePath?: string
 }
 
-export type ServerActionResult<Result> = Promise<
-  | Result
-  | {
-      error: string
-    }
->
+/** Chat list item (no messages) */
+export interface ChatListItem {
+  id: string
+  title?: string | null
+  created_at: string
+  updated_at: string
+  message_count: number
+}
+
+/** POST /api/chat request body */
+export interface SendMessageRequest {
+  content: string
+  chat_id?: string
+}
+
+/** POST /api/chat response */
+export interface SendMessageResponse {
+  chat_id: string
+  response: string
+  tool_results: ToolResult[]
+}
+
+/**
+ * A UI message — what the frontend renders in the chat list.
+ * `tool_results` is populated for tool-type messages.
+ */
+export interface UIMessage {
+  id: string
+  role: 'user' | 'assistant' | 'tool'
+  content: string
+  tool_results?: ToolResult[]
+  isLoading?: boolean
+}
 
 export interface Session {
   user: {
     id: string
     email: string
   }
-}
-
-export interface AuthResult {
-  type: string
-  message: string
-}
-
-export interface User extends Record<string, any> {
-  id: string
-  email: string
-  password: string
-  salt: string
 }

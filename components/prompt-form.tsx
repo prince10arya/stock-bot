@@ -2,13 +2,8 @@
 
 import * as React from 'react'
 import Textarea from 'react-textarea-autosize'
-import { useActions, useUIState } from 'ai/rsc'
-import { UserMessage } from './stocks/message'
-import { type AI } from '@/lib/chat/actions'
 import { useEnterSubmit } from '@/lib/hooks/use-enter-submit'
-import { nanoid } from 'nanoid'
 import { useRouter } from 'next/navigation'
-import { useLocalStorage } from '@/lib/hooks/use-local-storage'
 
 // Plus icon
 function PlusIcon() {
@@ -30,20 +25,17 @@ function SendIcon({ active }: { active: boolean }) {
   )
 }
 
-
-export function PromptForm({
-  input,
-  setInput
-}: {
+interface PromptFormProps {
   input: string
   setInput: (value: string) => void
-}) {
+  onSubmit: (value: string) => void
+  isLoading: boolean
+}
+
+export function PromptForm({ input, setInput, onSubmit, isLoading }: PromptFormProps) {
   const router = useRouter()
   const { formRef, onKeyDown } = useEnterSubmit()
   const inputRef = React.useRef<HTMLTextAreaElement>(null)
-  const { submitUserMessage } = useActions()
-  const [_, setMessages] = useUIState<typeof AI>()
-  const [apiKey, setApiKey] = useLocalStorage('groqKey', '')
 
   React.useEffect(() => {
     if (inputRef.current) inputRef.current.focus()
@@ -54,36 +46,30 @@ export function PromptForm({
   return (
     <form
       ref={formRef}
-      onSubmit={async (e: any) => {
+      onSubmit={(e: any) => {
         e.preventDefault()
         if (window.innerWidth < 600) e.target['message']?.blur()
         const value = input.trim()
         setInput('')
-        if (!value) return
-        setMessages(currentMessages => [
-          ...currentMessages,
-          { id: nanoid(), display: <UserMessage>{value}</UserMessage> }
-        ])
-        const responseMessage = await submitUserMessage(value, apiKey)
-        setMessages(currentMessages => [...currentMessages, responseMessage])
+        if (!value || isLoading) return
+        onSubmit(value)
       }}
     >
-      {/* Unified rounded container — adapts to dark/light via bg-secondary */}
       <div
-        className="w-full rounded-2xl overflow-hidden"
+        className="w-full rounded-2xl overflow-hidden transition-all duration-300"
         style={{
-          background: 'hsl(var(--secondary))',
-          border: '1px solid hsl(var(--border))',
+          background: 'hsl(var(--card))',
+          boxShadow: 'rgba(0, 0, 0, 0.05) 0px 4px 24px, 0px 0px 0px 1px hsl(var(--border))',
+          opacity: isLoading ? 0.8 : 1,
         }}
       >
-        {/* Textarea row */}
-        <div className="px-4 pt-4 pb-2">
+        <div className="px-5 pt-4 pb-2">
           <Textarea
             ref={inputRef}
             tabIndex={0}
             onKeyDown={onKeyDown}
-            placeholder="How can I help you today?"
-            className="w-full resize-none bg-transparent text-[15px] leading-relaxed focus:outline-none text-foreground placeholder:text-muted-foreground"
+            placeholder={isLoading ? 'StockBot is thinking...' : 'Ask about any stock, market trend, or financial data...'}
+            className="w-full resize-none bg-transparent text-[16px] leading-relaxed focus:outline-none text-foreground placeholder:text-muted-foreground font-sans min-h-[24px] max-h-[160px]"
             autoFocus
             spellCheck={false}
             autoComplete="off"
@@ -93,32 +79,37 @@ export function PromptForm({
             maxRows={6}
             value={input}
             onChange={e => setInput(e.target.value)}
+            disabled={isLoading}
           />
         </div>
 
-        {/* Bottom toolbar */}
         <div className="flex items-center justify-between px-3 pb-3">
-          {/* Left — + button */}
           <button
             type="button"
             onClick={() => router.push('/new')}
-            className="flex items-center justify-center size-8 rounded-full text-muted-foreground hover:text-foreground hover:bg-background/40 transition-colors"
+            className="flex items-center justify-center size-9 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
             title="New Chat"
+            disabled={isLoading}
           >
             <PlusIcon />
           </button>
 
-          {/* Right — send button when typing */}
           <div className="flex items-center">
-            {hasInput && (
+            {hasInput && !isLoading ? (
               <button
                 type="submit"
-                className="flex items-center justify-center size-8 rounded-full text-white transition-opacity hover:opacity-90"
-                style={{ background: '#c96442' }}
+                className="flex items-center justify-center size-9 rounded-xl text-white transition-opacity hover:opacity-90 active:scale-95 animate-in zoom-in-95 duration-200"
+                style={{ background: 'hsl(var(--primary))' }}
                 title="Send"
               >
                 <SendIcon active />
               </button>
+            ) : isLoading ? (
+              <div className="size-9 flex items-center justify-center">
+                <div className="w-4 h-4 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+              </div>
+            ) : (
+              <div className="size-9" />
             )}
           </div>
         </div>
