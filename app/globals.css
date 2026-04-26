@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500&family=Inter:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── DESIGN.md token map ────────────────────────────────────────────────────
+   Light  → Parchment canvas  (#f5f4ed)
+   Dark   → Near-Black olive  (#141413)
+   Accent → Terracotta        (#c96442)
+   Every gray is warm-toned (yellow-brown undertone). Zero cool grays.
+   ───────────────────────────────────────────────────────────────────────── */
+
+@layer base {
+  :root {
+    /* surfaces */
+    --background:   45 22% 94%;      /* Parchment  #f5f4ed */
+    --card:         45 30% 97%;      /* Ivory      #faf9f5 */
+    --popover:      45 30% 97%;
+
+    /* text */
+    --foreground:   40 5% 8%;        /* Near Black #141413 */
+    --card-foreground: 40 5% 8%;
+    --popover-foreground: 40 5% 8%;
+
+    /* brand / primary → terracotta */
+    --primary:      18 50% 52%;      /* Terracotta #c96442 */
+    --primary-foreground: 45 30% 97%; /* Ivory */
+
+    /* secondary → warm sand */
+    --secondary:    40 16% 88%;      /* Warm Sand  #e8e6dc */
+    --secondary-foreground: 40 5% 29%; /* Charcoal Warm #4d4c48 */
+
+    /* muted → slightly warmer sand */
+    --muted:        40 16% 91%;
+    --muted-foreground: 40 5% 37%;   /* Olive Gray #5e5d59 */
+
+    /* accent → same as secondary */
+    --accent:       40 16% 88%;
+    --accent-foreground: 40 5% 29%;
+
+    /* destructive → warm crimson */
+    --destructive:  0 62% 44%;       /* #b53333 */
+    --destructive-foreground: 45 30% 97%;
+
+    /* borders — warm cream */
+    --border:       40 18% 91%;      /* Border Cream #f0eee6 */
+    --input:        40 18% 88%;      /* Border Warm  #e8e6dc */
+
+    /* focus ring — Focus Blue (only cool color allowed) */
+    --ring:         210 82% 57%;     /* #3898ec */
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    /* surfaces */
+    --background:   40 5% 8%;        /* Near Black  #141413 */
+    --card:         40 4% 18%;       /* Dark Surface #30302e */
+    --popover:      40 4% 18%;
+
+    /* text */
+    --foreground:   45 30% 97%;      /* Ivory        #faf9f5 */
+    --card-foreground: 45 30% 97%;
+    --popover-foreground: 45 30% 97%;
+
+    /* brand / primary → terracotta (same in dark) */
+    --primary:      18 50% 52%;
+    --primary-foreground: 45 30% 97%;
+
+    /* secondary → dark charcoal */
+    --secondary:    40 4% 18%;       /* Dark Surface #30302e */
+    --secondary-foreground: 40 8% 70%; /* Warm Silver #b0aea5 */
+
+    /* muted */
+    --muted:        40 4% 14%;
+    --muted-foreground: 40 8% 70%;
+
+    /* accent */
+    --accent:       40 4% 18%;
+    --accent-foreground: 45 30% 97%;
+
+    /* destructive */
+    --destructive:  0 62% 44%;
+    --destructive-foreground: 45 30% 97%;
+
+    /* borders — warm dark */
+    --border:       40 4% 18%;       /* Dark Surface */
+    --input:        40 4% 18%;
+
+    /* focus ring */
+    --ring:         210 82% 57%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Headings → Lora (serif substitute for Anthropic Serif) */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lora', Georgia, serif;
+    font-weight: 500;
+    line-height: 1.15;
+  }
+
+  code, pre, kbd {
+    font-family: var(--font-geist-mono), 'Courier New', monospace;
+  }
+}
+
+/* ─── Warm ring-shadow utility ───────────────────────────────────────────── */
+@layer utilities {
+  .ring-warm {
+    box-shadow: 0px 0px 0px 1px #d1cfc5;
+  }
+  .ring-warm-dark {
+    box-shadow: 0px 0px 0px 1px #30302e;
+  }
+  .shadow-whisper {
+    box-shadow: rgba(0,0,0,0.05) 0px 4px 24px;
+  }
+}
