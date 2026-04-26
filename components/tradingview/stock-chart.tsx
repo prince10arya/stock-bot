@@ -7,7 +7,7 @@ type ComparisonSymbolObject = {
   position: "SameScale";
 };
 
-export function StockChart({ symbol, comparisonSymbols = [] }: { symbol: string, comparisonSymbols?: ComparisonSymbolObject[] }) {
+export function StockChart({ symbol, comparisonSymbols }: { symbol: string, comparisonSymbols: ComparisonSymbolObject[] }) {
   const container = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

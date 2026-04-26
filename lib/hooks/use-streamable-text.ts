@@ -1,10 +1,25 @@
+import { StreamableValue, readStreamableValue } from 'ai/rsc'
 import { useEffect, useState } from 'react'
 
-/**
- * Simple hook that returns string content as-is.
- * Previously handled StreamableValue from ai/rsc — now just a passthrough
- * since all streaming is done via SSE in the Chat component.
- */
-export const useStreamableText = (content: string): string => {
-  return content
+export const useStreamableText = (
+  content: string | StreamableValue<string>
+) => {
+  const [rawContent, setRawContent] = useState(
+    typeof content === 'string' ? content : ''
+  )
+
+  useEffect(() => {
+    ;(async () => {
+      if (typeof content === 'object') {
+        let value = ''
+        for await (const delta of readStreamableValue(content)) {
+          if (typeof delta === 'string') {
+            setRawContent((value = value + delta))
+          }
+        }
+      }
+    })()
+  }, [content])
+
+  return rawContent
 }

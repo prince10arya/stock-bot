@@ -3,16 +3,15 @@
 import * as React from 'react'
 import { IconGitHub, IconSeparator } from '@/components/ui/icons'
 import { ThemeToggle } from '@/components/theme-toggle'
-import { Sidebar } from '@/components/sidebar'
 
 function UserOrLogin() {
   return (
     <div className="flex items-center gap-1">
-      <Sidebar />
+      <IconSeparator className="size-5 text-muted-foreground/40" />
       {/* Wordmark — Lora serif per DESIGN.md */}
       <a
         href="/new"
-        className="font-medium text-[17px] leading-none ml-1"
+        className="font-medium text-[17px] leading-none"
         style={{ fontFamily: "'Lora', Georgia, serif" }}
       >
         StockBot

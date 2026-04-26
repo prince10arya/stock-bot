@@ -1,31 +1,12 @@
-import { Instrument_Serif, DM_Sans, JetBrains_Mono } from 'next/font/google'
+import { GeistSans } from 'geist/font/sans'
+import { GeistMono } from 'geist/font/mono'
 
 import '@/app/globals.css'
 import { cn } from '@/lib/utils'
+// import { ThemeToggle } from '@/components/theme-toggle'
 import { Providers } from '@/components/providers'
 import { Header } from '@/components/header'
 import { Toaster } from '@/components/ui/sonner'
-
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
-
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-});
 
 export const metadata = {
   metadataBase: process.env.VERCEL_URL
@@ -46,8 +27,8 @@ export const metadata = {
 
 export const viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f5f4ed' },
-    { media: '(prefers-color-scheme: dark)', color: '#141413' }
+    { media: '(prefers-color-scheme: light)', color: 'white' },
+    { media: '(prefers-color-scheme: dark)', color: 'black' }
   ]
 }
 
@@ -61,9 +42,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body
         className={cn(
           'font-sans antialiased',
-          dmSans.variable,
-          instrumentSerif.variable,
-          jetbrainsMono.variable
+          GeistSans.variable,
+          GeistMono.variable
         )}
       >
         <Toaster position="top-center" />
@@ -75,8 +55,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
         >
           <div className="flex flex-col min-h-screen">
             <Header />
-            <main className="flex flex-col flex-1">{children}</main>
+            <main className="flex flex-col flex-1 bg-muted/50">{children}</main>
           </div>
+          {/* <ThemeToggle /> */}
         </Providers>
       </body>
     </html>
