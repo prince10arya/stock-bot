@@ -30,19 +30,6 @@ function SendIcon({ active }: { active: boolean }) {
   )
 }
 
-// Voice / waveform icon
-function WaveformIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <line x1="2" y1="12" x2="2" y2="12" />
-      <line x1="6" y1="8" x2="6" y2="16" />
-      <line x1="10" y1="5" x2="10" y2="19" />
-      <line x1="14" y1="8" x2="14" y2="16" />
-      <line x1="18" y1="10" x2="18" y2="14" />
-      <line x1="22" y1="12" x2="22" y2="12" />
-    </svg>
-  )
-}
 
 export function PromptForm({
   input,
